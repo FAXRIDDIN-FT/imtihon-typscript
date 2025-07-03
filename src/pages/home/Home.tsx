@@ -1,63 +1,20 @@
 import React from 'react';
 import { useMovie } from '@/api/hooks/useMovie';
 import HeroCarousel from '@/components/hero-carousel/HeroCarousel';
-import MovieCarousel from '@/components/movie-carousel/MovieCarousel';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Film, Star, Calendar, TrendingUp } from 'lucide-react';
 
 const Home = () => {
   const { getMovies } = useMovie();
   
-  // Fetch different categories of movies
-  const { data: popularData, isPending: popularPending } = getMovies({
+  // Fetch hero carousel data
+  const { data: heroData, isPending: heroPending } = getMovies({
     page: 1,
     sort_by: 'popularity.desc',
     without_genres: '18,36,27,10749',
   });
 
-  const { data: topRatedData, isPending: topRatedPending } = getMovies({
-    page: 1,
-    sort_by: 'vote_average.desc',
-    'vote_count.gte': 1000,
-    without_genres: '18,36,27,10749',
-  });
-
-  const { data: upcomingData, isPending: upcomingPending } = getMovies({
-    page: 1,
-    sort_by: 'release_date.desc',
-    'primary_release_date.gte': new Date().toISOString().split('T')[0],
-    without_genres: '18,36,27,10749',
-  });
-
-  const { data: actionData, isPending: actionPending } = getMovies({
-    page: 1,
-    with_genres: '28',
-    sort_by: 'popularity.desc',
-    without_genres: '18,36,27,10749',
-  });
-
-  const { data: comedyData, isPending: comedyPending } = getMovies({
-    page: 1,
-    with_genres: '35',
-    sort_by: 'popularity.desc',
-    without_genres: '18,36,27,10749',
-  });
-
-  const { data: dramaData, isPending: dramaPending } = getMovies({
-    page: 1,
-    with_genres: '18',
-    sort_by: 'vote_average.desc',
-    'vote_count.gte': 500,
-  });
-
-  const { data: sciFiData, isPending: sciFiPending } = getMovies({
-    page: 1,
-    with_genres: '878',
-    sort_by: 'popularity.desc',
-    without_genres: '18,36,27,10749',
-  });
-
-  const isLoading = popularPending || topRatedPending || upcomingPending;
-
-  if (isLoading) {
+  if (heroPending) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
@@ -68,83 +25,168 @@ const Home = () => {
     );
   }
 
+  const categories = [
+    {
+      title: "Популярные фильмы",
+      description: "Самые популярные фильмы на данный момент",
+      icon: TrendingUp,
+      link: "/popular",
+      color: "from-red-500 to-red-600"
+    },
+    {
+      title: "Лучшие по рейтингу",
+      description: "Фильмы с самыми высокими оценками",
+      icon: Star,
+      link: "/top-rated",
+      color: "from-yellow-500 to-yellow-600"
+    },
+    {
+      title: "Скоро в кинотеатрах",
+      description: "Новые фильмы, которые скоро выйдут",
+      icon: Calendar,
+      link: "/upcoming",
+      color: "from-blue-500 to-blue-600"
+    },
+    {
+      title: "Боевики",
+      description: "Захватывающие экшн-фильмы",
+      icon: Film,
+      link: "/action",
+      color: "from-orange-500 to-orange-600"
+    },
+    {
+      title: "Комедии",
+      description: "Лучшие комедийные фильмы",
+      icon: Film,
+      link: "/comedy",
+      color: "from-green-500 to-green-600"
+    },
+    {
+      title: "Драмы",
+      description: "Глубокие и эмоциональные истории",
+      icon: Film,
+      link: "/drama",
+      color: "from-purple-500 to-purple-600"
+    },
+    {
+      title: "Научная фантастика",
+      description: "Фильмы о будущем и технологиях",
+      icon: Film,
+      link: "/sci-fi",
+      color: "from-cyan-500 to-cyan-600"
+    },
+    {
+      title: "Все фильмы",
+      description: "Полный каталог фильмов с фильтрами",
+      icon: Film,
+      link: "/movies",
+      color: "from-gray-500 to-gray-600"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
       {/* Hero Carousel Section */}
       <section id="hero" className="relative">
-        <HeroCarousel data={popularData?.results?.slice(0, 5)} />
+        <HeroCarousel data={heroData?.results?.slice(0, 5)} />
       </section>
 
-      {/* Popular Movies Carousel */}
-      <section id="popular">
-        <MovieCarousel 
-          data={popularData?.results} 
-          title="Популярные фильмы"
-          subtitle="Самые популярные фильмы на данный момент"
-        />
+      {/* Categories Section */}
+      <section className="py-20 bg-white dark:bg-gray-800 transition-colors duration-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+              Исследуйте мир кино
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              Откройте для себя тысячи фильмов разных жанров. От популярных блокбастеров до скрытых жемчужин кинематографа.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {categories.map((category, index) => {
+              const IconComponent = category.icon;
+              return (
+                <Link
+                  key={index}
+                  to={category.link}
+                  className="group relative bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-2"
+                >
+                  {/* Gradient Background */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
+                  
+                  <div className="relative p-8">
+                    {/* Icon */}
+                    <div className={`w-16 h-16 bg-gradient-to-br ${category.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                      <IconComponent className="w-8 h-8 text-white" />
+                    </div>
+
+                    {/* Content */}
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-red-500 transition-colors duration-200">
+                      {category.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+                      {category.description}
+                    </p>
+
+                    {/* Arrow */}
+                    <div className="flex items-center text-red-500 font-medium group-hover:text-red-600 transition-colors duration-200">
+                      <span className="mr-2">Смотреть</span>
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
       </section>
 
-      {/* Top Rated Movies Carousel */}
-      <section id="top-rated">
-        <MovieCarousel 
-          data={topRatedData?.results} 
-          title="Лучшие по рейтингу"
-          subtitle="Фильмы с самыми высокими оценками"
-        />
+      {/* Features Section */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+              Почему выбирают нас?
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              Мы предоставляем лучший опыт просмотра фильмов с удобным интерфейсом и богатой базой данных.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Film className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Огромная база фильмов</h3>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                Тысячи фильмов всех жанров и эпох. От классики до новинок кинематографа.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Star className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Высокое качество</h3>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                Только лучшие фильмы с высокими рейтингами и положительными отзывами зрителей.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <TrendingUp className="w-10 h-10 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Актуальные тренды</h3>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                Всегда в курсе последних трендов и новинок мирового кинематографа.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
-
-      {/* Upcoming Movies Carousel */}
-      <section id="upcoming">
-        <MovieCarousel 
-          data={upcomingData?.results} 
-          title="Скоро в кинотеатрах"
-          subtitle="Новые фильмы, которые скоро выйдут"
-        />
-      </section>
-
-      {/* Action Movies Carousel */}
-      {!actionPending && actionData?.results && (
-        <section id="action">
-          <MovieCarousel 
-            data={actionData.results} 
-            title="Боевики"
-            subtitle="Захватывающие экшн-фильмы"
-          />
-        </section>
-      )}
-
-      {/* Comedy Movies Carousel */}
-      {!comedyPending && comedyData?.results && (
-        <section id="comedy">
-          <MovieCarousel 
-            data={comedyData.results} 
-            title="Комедии"
-            subtitle="Лучшие комедийные фильмы"
-          />
-        </section>
-      )}
-
-      {/* Drama Movies Carousel */}
-      {!dramaPending && dramaData?.results && (
-        <section id="drama">
-          <MovieCarousel 
-            data={dramaData.results} 
-            title="Драмы"
-            subtitle="Глубокие и эмоциональные истории"
-          />
-        </section>
-      )}
-
-      {/* Sci-Fi Movies Carousel */}
-      {!sciFiPending && sciFiData?.results && (
-        <section id="sci-fi">
-          <MovieCarousel 
-            data={sciFiData.results} 
-            title="Научная фантастика"
-            subtitle="Фильмы о будущем и технологиях"
-          />
-        </section>
-      )}
 
       {/* Call to Action Section */}
       <section className="py-20 bg-gradient-to-r from-red-500 to-red-600">
@@ -157,12 +199,18 @@ const Home = () => {
             Присоединяйтесь к миллионам зрителей по всему миру.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-red-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-all duration-200 hover:shadow-lg transform hover:scale-105">
+            <Link 
+              to="/movies"
+              className="bg-white text-red-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+            >
               Начать просмотр
-            </button>
-            <button className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-red-600 transition-all duration-200">
-              Узнать больше
-            </button>
+            </Link>
+            <Link 
+              to="/popular"
+              className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-red-600 transition-all duration-200"
+            >
+              Популярные фильмы
+            </Link>
           </div>
         </div>
       </section>
