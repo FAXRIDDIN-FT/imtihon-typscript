@@ -1,4 +1,3 @@
-import { NavLink } from "react-router-dom";
 import { Film, Menu, X, ChevronDown, Sun, Moon } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -25,6 +24,14 @@ const Header = () => {
         setIsLanguageOpen(!isLanguageOpen);
     };
 
+    const scrollToSection = (sectionId: string) => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+        setIsMobileMenuOpen(false);
+    };
+
     return (
         <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 transition-colors duration-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,46 +50,30 @@ const Header = () => {
 
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex items-center space-x-8">
-                        <NavLink
-                            to="/"
-                            className={({ isActive }) =>
-                                `text-sm font-medium transition-colors duration-200 hover:text-red-400 ${
-                                    isActive ? "text-red-500" : "text-gray-700 dark:text-gray-300"
-                                }`
-                            }
+                        <button
+                            onClick={() => scrollToSection('hero')}
+                            className="text-sm font-medium transition-colors duration-200 hover:text-red-400 text-gray-700 dark:text-gray-300"
                         >
-                            Афиша
-                        </NavLink>
-                        <NavLink
-                            to="/movies"
-                            className={({ isActive }) =>
-                                `text-sm font-medium transition-colors duration-200 hover:text-red-400 ${
-                                    isActive ? "text-red-500" : "text-gray-700 dark:text-gray-300"
-                                }`
-                            }
+                            Главная
+                        </button>
+                        <button
+                            onClick={() => scrollToSection('popular')}
+                            className="text-sm font-medium transition-colors duration-200 hover:text-red-400 text-gray-700 dark:text-gray-300"
                         >
-                            Сеансы
-                        </NavLink>
-                        <NavLink
-                            to="/tickets"
-                            className={({ isActive }) =>
-                                `text-sm font-medium transition-colors duration-200 hover:text-red-400 ${
-                                    isActive ? "text-red-500" : "text-gray-700 dark:text-gray-300"
-                                }`
-                            }
+                            Популярные
+                        </button>
+                        <button
+                            onClick={() => scrollToSection('top-rated')}
+                            className="text-sm font-medium transition-colors duration-200 hover:text-red-400 text-gray-700 dark:text-gray-300"
                         >
-                            Билеты
-                        </NavLink>
-                        <NavLink
-                            to="/search"
-                            className={({ isActive }) =>
-                                `text-sm font-medium transition-colors duration-200 hover:text-red-400 ${
-                                    isActive ? "text-red-500" : "text-gray-700 dark:text-gray-300"
-                                }`
-                            }
+                            Топ рейтинг
+                        </button>
+                        <button
+                            onClick={() => scrollToSection('upcoming')}
+                            className="text-sm font-medium transition-colors duration-200 hover:text-red-400 text-gray-700 dark:text-gray-300"
                         >
-                            Поиск
-                        </NavLink>
+                            Скоро
+                        </button>
                     </nav>
 
                     {/* Right Side Controls */}
@@ -139,58 +130,30 @@ const Header = () => {
                 {isMobileMenuOpen && (
                     <div className="md:hidden border-t border-gray-200 dark:border-gray-800 transition-colors duration-200">
                         <div className="px-2 pt-2 pb-3 space-y-1">
-                            <NavLink
-                                to="/"
-                                className={({ isActive }) =>
-                                    `block px-3 py-2 text-base font-medium transition-colors duration-200 rounded-lg ${
-                                        isActive
-                                            ? "text-red-500 bg-gray-100 dark:bg-gray-800"
-                                            : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
-                                    }`
-                                }
-                                onClick={() => setIsMobileMenuOpen(false)}
+                            <button
+                                onClick={() => scrollToSection('hero')}
+                                className="block w-full text-left px-3 py-2 text-base font-medium transition-colors duration-200 rounded-lg text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
                             >
-                                Афиша
-                            </NavLink>
-                            <NavLink
-                                to="/movies"
-                                className={({ isActive }) =>
-                                    `block px-3 py-2 text-base font-medium transition-colors duration-200 rounded-lg ${
-                                        isActive
-                                            ? "text-red-500 bg-gray-100 dark:bg-gray-800"
-                                            : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
-                                    }`
-                                }
-                                onClick={() => setIsMobileMenuOpen(false)}
+                                Главная
+                            </button>
+                            <button
+                                onClick={() => scrollToSection('popular')}
+                                className="block w-full text-left px-3 py-2 text-base font-medium transition-colors duration-200 rounded-lg text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
                             >
-                                Сеансы
-                            </NavLink>
-                            <NavLink
-                                to="/tickets"
-                                className={({ isActive }) =>
-                                    `block px-3 py-2 text-base font-medium transition-colors duration-200 rounded-lg ${
-                                        isActive
-                                            ? "text-red-500 bg-gray-100 dark:bg-gray-800"
-                                            : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
-                                    }`
-                                }
-                                onClick={() => setIsMobileMenuOpen(false)}
+                                Популярные
+                            </button>
+                            <button
+                                onClick={() => scrollToSection('top-rated')}
+                                className="block w-full text-left px-3 py-2 text-base font-medium transition-colors duration-200 rounded-lg text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
                             >
-                                Билеты
-                            </NavLink>
-                            <NavLink
-                                to="/search"
-                                className={({ isActive }) =>
-                                    `block px-3 py-2 text-base font-medium transition-colors duration-200 rounded-lg ${
-                                        isActive
-                                            ? "text-red-500 bg-gray-100 dark:bg-gray-800"
-                                            : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
-                                    }`
-                                }
-                                onClick={() => setIsMobileMenuOpen(false)}
+                                Топ рейтинг
+                            </button>
+                            <button
+                                onClick={() => scrollToSection('upcoming')}
+                                className="block w-full text-left px-3 py-2 text-base font-medium transition-colors duration-200 rounded-lg text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
                             >
-                                Поиск
-                            </NavLink>
+                                Скоро
+                            </button>
                             <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
                                 <button className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-all duration-200">
                                     Войти

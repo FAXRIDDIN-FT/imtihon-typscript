@@ -21,26 +21,28 @@
   transform: scale(1.2);
 }
 
-/* Movie Carousel Pagination */
-.movie-pagination-bullet {
+/* Dynamic Movie Carousel Pagination */
+[class*="-pagination-bullet"] {
   width: 8px;
   height: 8px;
   background: #d1d5db;
   opacity: 1;
   transition: all 0.3s ease;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
-.movie-pagination-bullet-active {
+[class*="-pagination-bullet-active"] {
   background: #ef4444;
   transform: scale(1.3);
 }
 
 /* Dark mode pagination */
-.dark .movie-pagination-bullet {
+.dark [class*="-pagination-bullet"] {
   background: #4b5563;
 }
 
-.dark .movie-pagination-bullet-active {
+.dark [class*="-pagination-bullet-active"] {
   background: #ef4444;
 }
 
@@ -186,4 +188,24 @@ textarea:focus {
 .dark .image-placeholder {
   background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
   background-size: 200% 100%;
+}
+
+/* Modal backdrop blur */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Smooth transitions for all elements */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
