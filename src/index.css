@@ -44,19 +44,46 @@
   background: #ef4444;
 }
 
-/* Hero Swiper Styles */
-.hero-swiper .swiper-slide {
+/* Main Swiper Styles */
+.mySwiper2 .swiper-slide {
   position: relative;
   overflow: hidden;
 }
 
+.mySwiper2 .swiper-button-next,
+.mySwiper2 .swiper-button-prev {
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.mySwiper2 .swiper-button-next:hover,
+.mySwiper2 .swiper-button-prev:hover {
+  background: rgba(239, 68, 68, 0.8);
+  transform: scale(1.1);
+}
+
+.mySwiper2 .swiper-button-next::after,
+.mySwiper2 .swiper-button-prev::after {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Thumbnails Swiper Styles */
 .thumbs-swiper .swiper-slide {
   opacity: 0.6;
   transition: opacity 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .thumbs-swiper .swiper-slide-thumb-active {
   opacity: 1;
+  transform: scale(1.05);
 }
 
 /* Line clamp utility */
